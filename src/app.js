@@ -41,5 +41,4 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Paths
 app.use("/", UserRouter)
