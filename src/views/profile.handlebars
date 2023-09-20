@@ -1,5 +1,8 @@
-<!-- views/profile.handlebars -->
-<h1>Perfil de Usuario</h1>
-<p>Nombre: {{first_name}} {{last_name}}</p>
-<p>Email: {{email}}</p>
-<p>Edad: {{age}}</p>
+<form method="get" action="/logout">
+    <h1>Tu Perfil</h1>
+    <p>Bienvenido {{first_name}} {{last_name}}</p>
+    <p>Nivel de usuario: {{rol}}</p>
+    <p>Email: {{email}}</p>
+    <p>Edad: {{age}}</p>
+    <button type="submit">Logout</button>
+</form>
