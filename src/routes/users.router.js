@@ -19,6 +19,17 @@ router.get("/", (req, res) => {
     }
 })
 
+router.get("/logout", (req, res) => {
+    req.session.destroy(err => {
+        if (!err) {
+            res.redirect('/')
+        } else {
+            res.send("Error al intentar salir.")
+        }
+    })
+})
+
+
 //Profile
 router.get('/profile', (req, res) => {
     try {
@@ -36,17 +47,6 @@ router.get('/profile', (req, res) => {
         res.status(500).send("Error de render.")
     }
 });
-
-router.get("/logout", (req, res) => {
-    req.session.destroy(err => {
-        if (!err) {
-            res.redirect('/')
-        } else {
-            res.send("Error al intentar salir.")
-        }
-    })
-})
-
 
 
 //Register

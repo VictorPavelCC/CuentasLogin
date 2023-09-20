@@ -1,8 +1,11 @@
-<form method="get" action="/logout">
+<form method="get" action="/logout" style="display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;">
     <h1>Tu Perfil</h1>
     <p>Bienvenido {{first_name}} {{last_name}}</p>
     <p>Nivel de usuario: {{rol}}</p>
     <p>Email: {{email}}</p>
     <p>Edad: {{age}}</p>
-    <button type="submit">Logout</button>
+    <button type="submit" class="btn btn-danger">Logout</button>
 </form>
