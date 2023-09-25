@@ -4,7 +4,11 @@ const MongoStore = require('connect-mongo')
 const mongoose = require('mongoose')
 const path = require('path')
 const handlebars = require('express-handlebars')
-const UserRouter = require('./routes/users.router')
+const sessionRouter = require('./routes/sessions.router')
+
+const passport = require('passport')
+const initializePassport = require('./config/passport.config')
+
 const app = express()
 const PORT = 8080
 
@@ -34,7 +38,12 @@ app.use(session({
     saveUninitialized: false
 }))
 
+
+initializePassport();
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use("/", UserRouter)
+app.use("/api/sessions/", sessionRouter)

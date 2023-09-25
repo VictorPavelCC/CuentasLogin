@@ -1,0 +1,6 @@
+email: marcos@gmail.com
+password: abcd
+
+
+email: adminCoder@coder.com
+password: adminCod3r123
