@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const path = require('path')
 const handlebars = require('express-handlebars')
 const sessionRouter = require('./routes/sessions.router')
+const cartRouter = require("./routes/carts.router")
+const productRouter = require("./routes/products.router")
 
 const passport = require('passport')
 const initializePassport = require('./config/passport.config')
@@ -47,3 +49,5 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/sessions/", sessionRouter)
+app.use("/api/products", productRouter);
+app.use("/api/carts", cartRouter);  
