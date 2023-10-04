@@ -86,6 +86,8 @@ const initializePassport = () => {
         try {
             console.log(profile);
             let user = await userModel.findOne({ email: profile._json.email })
+            const newCart = new cartModel({ user: null, products: [] });
+            await newCart.save();
 
             if (!user) {
                 let newUser = {
@@ -93,7 +95,8 @@ const initializePassport = () => {
                     last_name: "",
                     age:27,
                     email: profile._json.email,
-                    password: ""
+                    password: "",
+                    cart:newCart._id
                 }
 
 
