@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { userModel } = require('../models/user.model');
+const {cartModel} =require('../models/cart.model')
 const { createHash, isValidatePassword } = require('../../utils')
 const passport = require('passport');
 
@@ -78,19 +79,22 @@ router.post('/', passport.authenticate("login", { failureRedirect: "/api/session
         if (!req.user) {
             return res.status(400).send({ status: "error", error: "Credenciales inválidas." })
         }
-        
+
         req.session.user = {
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             age: req.user.age,
             email: req.user.email,
-            rol: req.user.rol
+            rol: req.user.rol,
+            cart: req.user.cart,
+            _id:req.user._id
         }
     
         console.log("Datos correctos, ingresando a vista de perfil.");
+
         res.redirect("/api/sessions/profile")}
 
-    );
+)
 
 
 router.get("/failLogin", (req, res) => {

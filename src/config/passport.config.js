@@ -1,14 +1,13 @@
 const passport = require('passport');
 const local = require('passport-local');
 const { userModel } = require('../models/user.model');
+const { cartModel } = require('../models/cart.model');
 const { createHash, isValidatePassword } = require('../../utils');
 const GitHubStrategy = require('passport-github2');
 
 const localStrategy = local.Strategy;
 
 const initializePassport = () => {
-
-
     passport.use("register", new localStrategy(
         { passReqToCallback: true, usernameField: "email" }, async (req, username, password, done) => {
             const { first_name, last_name, email, age } = req.body;
@@ -16,6 +15,9 @@ const initializePassport = () => {
             try {
                 
                 let user = await userModel.findOne({ email: username })
+
+                const newCart = new cartModel({ user: null, products: [] });
+                await newCart.save();
 
                 
                 if (user) {
@@ -28,18 +30,21 @@ const initializePassport = () => {
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    cart:newCart._id
                 }
 
                 //Rol System
                 if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
-                    newUser.role = "admin"
+                    newUser.rol = "admin"
                     await userModel.updateOne({ _id: newUser._id }, newUser);
                 }
 
 
                 let result = await userModel.create(newUser);
 
+                newCart.user = result._id;
+                await newCart.save();
 
                 return done(null, result);
 
@@ -52,7 +57,7 @@ const initializePassport = () => {
 
     passport.use("login", new localStrategy({ usernameField: "email" }, async (username, password, done) => {
         try {
-            const user = await userModel.findOne({ email: username })
+            const user = await userModel.findOne({ email: username }).populate("cart");
 
             if (!user) {
                 console.log("Usuario ingresado no existe.");

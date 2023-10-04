@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { productModel } = require("../models/product.model");
+const { cartModel } = require("../models/cart.model");
 const router = Router();
 
 //GET
@@ -55,7 +56,23 @@ router.get("/productsList", async (req, res) => {
 
     const options = {limit ,page ,sort};
 
+    const user = req.session.user;
+    //const userID = req.session.user.user;
+    const userCartID = req.session.user._id;
+    
+  
+    const userCart = await cartModel.findOne({ user: userCartID });
+
+    const cid = userCart._id.toString();
+    const uid = userCart.user.toString();
+/* 
+    console.log("Cart ID:", cid);
+    console.log("User ID:", uid);
+    console.log("llego");
+ */
+
     let products = await productModel.paginate(query, options);
+
 
     const pageNumbers = [];
     for (let i = 1; i <= products.totalPages; i++) {
@@ -68,6 +85,12 @@ router.get("/productsList", async (req, res) => {
       categories.push("Todas");
     } catch (error) {}
 
+    //console.log("Cart mandado(user):",userCart.toString())
+    //console.log("Cart mandado type:",typeof userCart)
+    
+    //console.log("cartID",userCart._id)
+    //console.log("productos",products.docs)
+    //console.log("cart",userCart);
     res.render("productsList", {
       status: "success",
       payload: products.docs,
@@ -79,6 +102,9 @@ router.get("/productsList", async (req, res) => {
       hasNextPage: products.hasNextPage,
       pageNumbers: pageNumbers,
       categories: categories,
+      user:user,
+      userID:uid,
+      userCartId: cid,
     });
   } catch (error) {
     res.render("productsList", {
@@ -86,6 +112,9 @@ router.get("/productsList", async (req, res) => {
     });
   }
 });
+
+
+
 
 router.get("/:id", async (req, res) => {
   let id = req.params.id;

@@ -4,3 +4,12 @@ password: abcd
 
 email: adminCoder@coder.com
 password: adminCod3r123
+
+
+Pablo Mendez
+email: pablo@email.com
+password: pab123
+
+Omar Montes
+email: omar@email.com
+password: oma123

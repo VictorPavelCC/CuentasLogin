@@ -8,7 +8,7 @@
           <div class="row align-items-center">
             <div class="col-md-1">
               <button class="btn btn-danger"style="padding: 20px; border-radius: 50px;" 
-              onclick="eliminarProducto('{{this.info._doc._id}}', '{{this.quantity}}')">
+              onclick="eliminarProducto('{{this.info._doc._id}}', '{{this.quantity}}', '${cid}')">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </div>
@@ -44,12 +44,11 @@
 </div>
 
 <script>
-    function eliminarProducto(productId, quantity) {
-  
-      const cartId = "cid";
-      const endpoint = `{{cartId}}/products/${productId}`;
+    function eliminarProducto(productId, quantity, cartId) {
+      const cid = '{{cartId}}';
+      //const endpoint = `${cid}/products/${productId}`;
 
-      fetch(endpoint, {
+      fetch(`/api/carts/${cid}/products/${productId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +58,7 @@
       })
         .then((res) => {
           if (res.ok) {
-  
+            
             console.log("Producto eliminado con éxito");
             location.reload();
           } else {
